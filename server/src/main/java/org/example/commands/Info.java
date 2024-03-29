@@ -15,7 +15,7 @@ public class Info extends Command {
     private final TicketRepository productRepository;
 
     public Info(TicketRepository ticketRepository) {
-        super("TicketRepository", "вывести информацию о коллекции");
+        super("info", "вывести информацию о коллекции");
         this.productRepository = ticketRepository;
     }
 

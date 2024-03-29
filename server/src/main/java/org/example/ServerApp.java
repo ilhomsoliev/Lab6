@@ -33,6 +33,7 @@ public class ServerApp {
             register(Commands.REMOVE_LOWER, new RemoveLower(repository));
             register(Commands.COUNT_BY_DISCOUNT, new CountByDiscount(repository));
             register(Commands.FILTER_GREATER_THAN_DISCOUNT, new FilterGreaterThanDiscount(repository));
+            register(Commands.PRINT_ASCENDING, new PrintAscending(repository));
             register(Commands.CLEAR, new Clear(repository));
             register(Commands.HEAD, new Head(repository));
         }};

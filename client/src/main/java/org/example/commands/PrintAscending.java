@@ -3,9 +3,12 @@ package org.example.commands;
 
 import org.example.command_line.console.Console;
 import org.example.exceptions.CollectionIsEmptyException;
+import org.example.modules.TCPclient;
 import org.example.network.NetworkClient;
 import org.example.network_models.request.HelpRequest;
+import org.example.network_models.request.PrintAscendingRequest;
 import org.example.network_models.response.HelpResponse;
+import org.example.network_models.response.PrintAscendingResponse;
 
 import java.io.IOException;
 
@@ -16,28 +19,23 @@ import java.io.IOException;
  */
 public class PrintAscending extends Command {
     private final Console console;
-    private final NetworkClient client;
 
-    public PrintAscending(Console console, NetworkClient client) {
+    public PrintAscending(Console console) {
         super("print_ascending");
         this.console = console;
-        this.client = client;
     }
 
 
     @Override
     public boolean apply(String[] arguments) {
-        if (!arguments[1].isEmpty()) {
-            console.printError("Неправильное количество аргументов!");
-            console.println("Использование: '" + getName() + "'");
-            return false;
-        }
         try {
-            var response = (HelpResponse) client.sendAndReceiveCommand(new HelpRequest());
-            console.print(response.helpMessage);
+            var response = (PrintAscendingResponse) TCPclient.sendCommandAndReceiveResponse(new PrintAscendingRequest());
+            console.print(response.getResult());
             return true;
         } catch (IOException e) {
             console.printError("Ошибка взаимодействия с сервером");
+        } catch (ClassNotFoundException e) {
+            console.printError("ClassNotFoundException");
         }
         return false;
     }

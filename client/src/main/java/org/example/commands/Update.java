@@ -59,7 +59,7 @@ public class Update extends Command {
             console.printError(e.getMessage());
         } catch (IncorrectInputInScriptException ignored) {
         } catch (ClassNotFoundException e) {
-            console.printError("ClassNotFoundException");
+            console.printError("ClassNotFoundException " + e.getMessage());
         }
         return false;
     }

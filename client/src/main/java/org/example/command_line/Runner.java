@@ -48,7 +48,7 @@ public class Runner {
             put(Commands.REMOVE_LOWER, new RemoveLower(console));
             put(Commands.COUNT_BY_DISCOUNT, new CountByDiscount(console));
             put(Commands.FILTER_GREATER_THAN_DISCOUNT, new FilterGreaterThanDiscount(console));
-            /*put(Commands.PRINT_ASCENDING, new PrintAscending(console, client));*/
+            put(Commands.PRINT_ASCENDING, new PrintAscending(console));
         }};
     }
 

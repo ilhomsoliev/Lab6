@@ -237,7 +237,7 @@ public class TicketRepository {
      * Prints elements by sorting them by their price
      * @throws CollectionIsEmptyException
      */
-    public void printElementsAscending() throws CollectionIsEmptyException {
+    public String printElementsAscending() throws CollectionIsEmptyException {
         if (collection == null) {
             throw new CollectionIsEmptyException();
         }
@@ -251,7 +251,7 @@ public class TicketRepository {
             Ticket ticket = iterator.next();
             info.append(ticket);
         }
-        System.out.println(info);
+        return info.toString();
     }
 
     @Override
