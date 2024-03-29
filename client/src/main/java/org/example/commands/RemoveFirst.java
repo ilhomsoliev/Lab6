@@ -6,6 +6,7 @@ import org.example.exceptions.APIException;
 import org.example.exceptions.CollectionIsEmptyException;
 import org.example.exceptions.NotFoundException;
 import org.example.exceptions.WrongAmountOfElementsException;
+import org.example.modules.TCPclient;
 import org.example.network.NetworkClient;
 import org.example.network_models.request.RemoveFirstRequest;
 import org.example.network_models.response.RemoveFirstResponse;
@@ -20,19 +21,17 @@ import java.io.IOException;
 public class RemoveFirst extends Command {
 
     private final Console console;
-    private final NetworkClient client;
 
-    public RemoveFirst(Console console, NetworkClient client) {
+    public RemoveFirst(Console console) {
         super("remove_first");
         this.console = console;
-        this.client = client;
     }
 
     @Override
     public boolean apply(String[] arguments) {
         try {
             if (!arguments[1].isEmpty()) throw new WrongAmountOfElementsException();
-            var response = (RemoveFirstResponse) client.sendAndReceiveCommand(new RemoveFirstRequest());
+            var response = (RemoveFirstResponse) TCPclient.sendCommandAndReceiveResponse(new RemoveFirstRequest());
 
             if (response.getError() != null && !response.getError().isEmpty()) {
                 throw new APIException(response.getError());
@@ -45,6 +44,9 @@ public class RemoveFirst extends Command {
             console.printError("Ошибка взаимодействия с сервером");
         } catch (APIException e) {
             console.printError(e.getMessage());
+        } catch (ClassNotFoundException e) {
+            console.printError("ClassNotFoundException");
+
         }
         return false;
     }

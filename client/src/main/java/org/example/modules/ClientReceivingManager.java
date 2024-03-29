@@ -37,7 +37,6 @@ public class ClientReceivingManager {
                     continue;
                 }
                 if (readBytes == -1)
-
                     tcpClient.getSocketChannel().close();
 
                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();

@@ -215,7 +215,7 @@ public class TicketRepository {
      * @param discount
      * @throws CollectionIsEmptyException
      */
-    public void printElementsHigherElementsByDiscount(int discount) throws CollectionIsEmptyException {
+    public String elementsHigherElementsByDiscount(int discount) throws CollectionIsEmptyException {
         if (collection == null) {
             throw new CollectionIsEmptyException();
         }
@@ -229,8 +229,8 @@ public class TicketRepository {
                 amount++;
             }
         }
-        System.out.println("Result: " + amount);
-        System.out.println(info);
+        info.append("\nResult: ").append(amount);
+        return info.toString();
     }
 
     /**
@@ -349,7 +349,6 @@ public class TicketRepository {
     public void removeFirst() {
         collection.poll();
     }
-
 
     /**
      * Очищает коллекцию.

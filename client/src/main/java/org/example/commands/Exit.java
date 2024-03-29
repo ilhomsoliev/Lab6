@@ -27,7 +27,7 @@ public class Exit extends Command {
         }
 
         console.println("Завершение выполнения...");
-    
+
         return true;
     }
 }

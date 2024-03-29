@@ -3,12 +3,13 @@ package org.example.model;
 
 import org.example.utility.Validatable;
 
+import java.io.Serializable;
 import java.util.Objects;
 /**
  * Class given in task
  * @author: ilhom_soliev
  */
-public class Coordinates implements Validatable {
+public class Coordinates implements Validatable, Serializable {
     private Long x; //Поле не может быть null
     private Double y; //Поле не может быть null
 

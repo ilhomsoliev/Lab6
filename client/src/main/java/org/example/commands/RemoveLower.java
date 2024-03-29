@@ -4,6 +4,7 @@ package org.example.commands;
 import org.example.blanks.TicketForm;
 import org.example.command_line.console.Console;
 import org.example.exceptions.*;
+import org.example.modules.TCPclient;
 import org.example.network.NetworkClient;
 import org.example.network_models.request.RemoveByIdRequest;
 import org.example.network_models.request.RemoveLowerRequest;
@@ -18,12 +19,10 @@ import java.io.IOException;
  */
 public class RemoveLower extends Command {
     private final Console console;
-    private final NetworkClient client;
 
-    public RemoveLower(Console console, NetworkClient client) {
+    public RemoveLower(Console console) {
         super("remove_lower {element}");
         this.console = console;
-        this.client = client;
     }
 
     @Override
@@ -32,7 +31,7 @@ public class RemoveLower extends Command {
             if (!arguments[1].isEmpty()) throw new WrongAmountOfElementsException();
             console.println("* Создание нового ticket (remove_lower):");
             var ticket = (new TicketForm(console)).build();
-            var response = (RemoveByIdResponse) client.sendAndReceiveCommand(new RemoveLowerRequest(ticket));
+            var response = (RemoveByIdResponse) TCPclient.sendCommandAndReceiveResponse(new RemoveLowerRequest(ticket));
             if (response.getError() != null && !response.getError().isEmpty()) {
                 throw new APIException(response.getError());
             }
@@ -49,6 +48,9 @@ public class RemoveLower extends Command {
             console.printError("Ошибка взаимодействия с сервером");
         } catch (APIException e) {
             console.printError(e.getMessage());
+        } catch (ClassNotFoundException e) {
+            console.printError("ClassNotFoundException");
+
         }
         return false;
     }

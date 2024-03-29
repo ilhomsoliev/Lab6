@@ -45,12 +45,18 @@ public class TCPclient {
     }
 
     public static Response sendCommandAndReceiveResponse(Request request) throws IOException, ClassNotFoundException {
-        var baos = new ByteArrayOutputStream();
-        var a = new ObjectOutputStream(baos);
-        a.writeObject(request);
-        sendingManager.send(baos.toByteArray());
-        var command = new ObjectInputStream(new ByteArrayInputStream(receivingManager.receive()));
-        return (Response) command.readObject();
+        try (var baos = new ByteArrayOutputStream(); var a = new ObjectOutputStream(baos)) {
+            a.writeObject(request);
+            sendingManager.send(baos.toByteArray());
+            try (var command = new ObjectInputStream(new ByteArrayInputStream(receivingManager. receive()))) {
+                Response response = (Response) command.readObject();
+                System.out.println(response.getResult());
+                return response;
+            }
+        } catch (Exception e) {
+            System.out.println("\nsendCommand - " + e);
+        }
+        throw new ClassNotFoundException("");
     }
 
     public SocketChannel getSocketChannel() {

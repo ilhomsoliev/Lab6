@@ -4,6 +4,7 @@ package org.example.commands;
 import org.example.command_line.console.Console;
 import org.example.exceptions.APIException;
 import org.example.exceptions.WrongAmountOfElementsException;
+import org.example.modules.TCPclient;
 import org.example.network.NetworkClient;
 import org.example.network_models.request.HeadRequest;
 import org.example.network_models.response.HeadResponse;
@@ -16,12 +17,10 @@ import java.io.IOException;
  */
 public class Head extends Command {
     private final Console console;
-    private final NetworkClient client;
 
-    public Head(Console console, NetworkClient client) {
+    public Head(Console console) {
         super("head");
         this.console = console;
-        this.client = client;
     }
 
     /**
@@ -33,7 +32,7 @@ public class Head extends Command {
         try {
             if (!arguments[1].isEmpty()) throw new WrongAmountOfElementsException();
 
-            var response = (HeadResponse) client.sendAndReceiveCommand(new HeadRequest());
+            var response = (HeadResponse) TCPclient.sendCommandAndReceiveResponse(new HeadRequest());
             if (response.getError() != null && !response.getError().isEmpty()) {
                 throw new APIException(response.getError());
             }
@@ -52,6 +51,8 @@ public class Head extends Command {
             console.printError("Ошибка взаимодействия с сервером");
         } catch (APIException e) {
             console.printError(e.getMessage());
+        } catch (ClassNotFoundException e) {
+            console.printError("ClassNotFoundException");
         }
         return false;
     }

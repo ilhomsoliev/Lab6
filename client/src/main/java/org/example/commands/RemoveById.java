@@ -4,6 +4,7 @@ package org.example.commands;
 import org.example.command_line.console.Console;
 import org.example.exceptions.APIException;
 import org.example.exceptions.WrongAmountOfElementsException;
+import org.example.modules.TCPclient;
 import org.example.network.NetworkClient;
 import org.example.network_models.request.RemoveByIdRequest;
 import org.example.network_models.response.RemoveByIdResponse;
@@ -16,12 +17,10 @@ import java.io.IOException;
  */
 public class RemoveById extends Command {
     private final Console console;
-    private final NetworkClient client;
 
-    public RemoveById(Console console, NetworkClient client) {
+    public RemoveById(Console console) {
         super("remove_by_id <ID>");
         this.console = console;
-        this.client = client;
     }
 
     /**
@@ -34,7 +33,7 @@ public class RemoveById extends Command {
             if (arguments[1].isEmpty()) throw new WrongAmountOfElementsException();
             var id = Integer.parseInt(arguments[1]);
 
-            var response = (RemoveByIdResponse) client.sendAndReceiveCommand(new RemoveByIdRequest(id));
+            var response = (RemoveByIdResponse) TCPclient.sendCommandAndReceiveResponse(new RemoveByIdRequest(id));
 
             if (response.getError() != null && !response.getError().isEmpty()) {
                 throw new APIException(response.getError());
@@ -51,6 +50,8 @@ public class RemoveById extends Command {
             console.printError("Ошибка взаимодействия с сервером");
         } catch (APIException e) {
             console.printError(e.getMessage());
+        } catch (ClassNotFoundException e) {
+            console.printError("ClassNotFoundException");
         }
         return false;
     }

@@ -90,12 +90,8 @@ public class DumpManager {
                 PriorityQueue<Ticket> queue = new PriorityQueue<>();
 
                 (new ArrayList<>(collection)).forEach(ticket -> {
-//                    console.println(ticket.toString());
                     if (!ticket.validate()) {
                         ServerApp.logger.error("Ticket с id=" + ticket.getId() + " имеет невалидные поля.");
-//                        console.printError("В загрузочном файле не обнаружена необходимая коллекция!");
-//                        throw new JsonParseException("");
-//                        new PriorityQueue<>();
                     } else {
                         queue.add(ticket);
                     }

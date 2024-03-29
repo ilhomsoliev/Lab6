@@ -2,10 +2,7 @@ package org.example.commands;
 
 
 import org.example.managers.TicketRepository;
-import org.example.network_models.request.RemoveByIdRequest;
-import org.example.network_models.request.RemoveFirstRequest;
 import org.example.network_models.request.Request;
-import org.example.network_models.response.RemoveByIdResponse;
 import org.example.network_models.response.RemoveFirstResponse;
 import org.example.network_models.response.Response;
 
@@ -27,16 +24,14 @@ public class RemoveFirst extends Command {
      */
     @Override
     public Response apply(Request request) {
-//        var req = (RemoveFirstRequest) request;
-
         try {
             if (productRepository.size() == 0) {
                 return new RemoveFirstResponse("No ticket to delete!");
             }
             productRepository.removeFirst();
-            return new RemoveByIdResponse(null);
+            return new RemoveFirstResponse(null);
         } catch (Exception e) {
-            return new RemoveByIdResponse(e.toString());
+            return new RemoveFirstResponse(e.toString());
         }
     }
 }

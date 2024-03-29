@@ -25,8 +25,6 @@ public class Runner {
     private final TCPclient client;
 
     private final Map<String, Command> commands;
-//    private final Logger logger = Main.logger;
-
 
     private final List<String> scriptStack = new ArrayList<>();
 
@@ -36,21 +34,21 @@ public class Runner {
         this.console = console;
 
         this.commands = new HashMap<>() {{
-            put(Commands.HELP, new Help(console, client));
-            put(Commands.INFO, new Info(console, client));
-            put(Commands.SHOW, new Show(console, client));
-            put(Commands.ADD, new Add(console, client));
-            /*put(Commands.UPDATE, new Update(console, client));
-            put(Commands.REMOVE_BY_ID, new RemoveById(console, client));
-            put(Commands.CLEAR, new Clear(console, client));
-            put(Commands.HEAD, new Head(console, client));
+            put(Commands.HELP, new Help(console));
+            put(Commands.INFO, new Info(console));
+            put(Commands.SHOW, new Show(console));
+            put(Commands.ADD, new Add(console));
+            put(Commands.UPDATE, new Update(console, client));
+            put(Commands.REMOVE_BY_ID, new RemoveById(console));
+            put(Commands.CLEAR, new Clear(console));
+            put(Commands.HEAD, new Head(console));
             put(Commands.EXECUTE_SCRIPT, new ExecuteScript(console));
             put(Commands.EXIT, new Exit(console));
-            put(Commands.REMOVE_FIRST, new RemoveFirst(console, client));
-            put(Commands.REMOVE_LOWER, new RemoveLower(console, client));
-            put(Commands.COUNT_BY_DISCOUNT, new CountByDiscount(console, client));
-            put(Commands.FILTER_GREATER_THAN_DISCOUNT, new FilterGreaterThanDiscount(console, client));
-            put(Commands.PRINT_ASCENDING, new PrintAscending(console, client));*/
+            put(Commands.REMOVE_FIRST, new RemoveFirst(console));
+            put(Commands.REMOVE_LOWER, new RemoveLower(console));
+            put(Commands.COUNT_BY_DISCOUNT, new CountByDiscount(console));
+            put(Commands.FILTER_GREATER_THAN_DISCOUNT, new FilterGreaterThanDiscount(console));
+            /*put(Commands.PRINT_ASCENDING, new PrintAscending(console, client));*/
         }};
     }
 
@@ -153,7 +151,7 @@ public class Runner {
         } catch (SecurityException e) {
             console.printError("Security ошибка!");
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            console.printError(e.getMessage());
         }
         return RunnerStatus.ERROR;
     }
@@ -165,7 +163,7 @@ public class Runner {
      * @return Код завершения.
      */
     private RunnerStatus launchCommand(String[] userCommand) {
-        if (userCommand[0].equals("")) return RunnerStatus.OK;
+        if (userCommand[0].isEmpty()) return RunnerStatus.OK;
         var command = commands.get(userCommand[0]);
 
         if (command == null) {

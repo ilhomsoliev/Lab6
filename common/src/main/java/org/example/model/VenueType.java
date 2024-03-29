@@ -1,10 +1,12 @@
 package org.example.model;
 
+import java.io.Serializable;
+
 /**
  * Enum class given in task
  * @author: ilhom_soliev
  */
-public enum VenueType {
+public enum VenueType implements Serializable {
     PUB,
     OPEN_AREA,
     STADIUM;

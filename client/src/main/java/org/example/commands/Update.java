@@ -7,6 +7,7 @@ import org.example.exceptions.APIException;
 import org.example.exceptions.IncorrectInputInScriptException;
 import org.example.exceptions.InvalidFormException;
 import org.example.exceptions.WrongAmountOfElementsException;
+import org.example.modules.TCPclient;
 import org.example.network.NetworkClient;
 import org.example.network_models.request.UpdateRequest;
 import org.example.network_models.response.UpdateResponse;
@@ -19,9 +20,9 @@ import java.io.IOException;
  */
 public class Update extends Command {
     private final Console console;
-    private final NetworkClient client;
+    private final TCPclient client;
 
-    public Update(Console console, NetworkClient client) {
+    public Update(Console console, TCPclient client) {
         super("update ID {element}");
         this.console = console;
         this.client = client;
@@ -37,18 +38,14 @@ public class Update extends Command {
             if (arguments[1].isEmpty()) throw new WrongAmountOfElementsException();
 
             var id = Integer.parseInt(arguments[1]);
-
             console.println("* Введите данные обновленного продукта:");
             var updatedProduct = (new TicketForm(console)).build();
-
-            var response = (UpdateResponse) client.sendAndReceiveCommand(new UpdateRequest(id, updatedProduct));
+            var response = (UpdateResponse) TCPclient.sendCommandAndReceiveResponse(new UpdateRequest(id, updatedProduct));
             if (response.getError() != null && !response.getError().isEmpty()) {
                 throw new APIException(response.getError());
             }
-
             console.println("Продукт успешно обновлен.");
             return true;
-
         } catch (WrongAmountOfElementsException exception) {
             console.printError("Неправильное количество аргументов!");
             console.println("Использование: '" + getName() + "'");
@@ -61,6 +58,8 @@ public class Update extends Command {
         } catch (APIException e) {
             console.printError(e.getMessage());
         } catch (IncorrectInputInScriptException ignored) {
+        } catch (ClassNotFoundException e) {
+            console.printError("ClassNotFoundException");
         }
         return false;
     }

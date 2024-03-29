@@ -6,7 +6,7 @@ public class FilterGreaterThanDiscountRequest  extends Request {
     public final int discount;
 
     public FilterGreaterThanDiscountRequest(int discount) {
-        super(Commands.COUNT_BY_DISCOUNT);
+        super(Commands.FILTER_GREATER_THAN_DISCOUNT);
         this.discount = discount;
     }
 }

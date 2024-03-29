@@ -21,12 +21,10 @@ import java.io.IOException;
  */
 public class Add extends Command {
     private final Console console;
-    private final TCPclient client;
 
-    public Add(Console console, TCPclient client) {
+    public Add(Console console) {
         super("add {element}");
         this.console = console;
-        this.client = client;
     }
 
     /**
@@ -59,6 +57,7 @@ public class Add extends Command {
             console.printError(e.getMessage());
         } catch (IncorrectInputInScriptException ignored) {
         } catch (ClassNotFoundException ignored) {
+            console.printError("ClassNotFoundException");
         }
         return false;
     }

@@ -14,12 +14,10 @@ import java.io.IOException;
  */
 public class Info extends Command {
     private final Console console;
-    private final TCPclient client;
 
-    public Info(Console console, TCPclient client) {
+    public Info(Console console) {
         super("info");
         this.console = console;
-        this.client = client;
     }
 
     /**
@@ -34,7 +32,7 @@ public class Info extends Command {
             return false;
         }
         try {
-            var response = (InfoResponse) client.sendCommandAndReceiveResponse(new InfoRequest());
+            var response = (InfoResponse) TCPclient.sendCommandAndReceiveResponse(new InfoRequest());
             console.print(response.infoMessage);
             return true;
         } catch (IOException e) {

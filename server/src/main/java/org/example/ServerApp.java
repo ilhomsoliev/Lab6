@@ -5,23 +5,10 @@ import org.apache.logging.log4j.Logger;
 import org.example.commands.*;
 import org.example.handlers.CommandHandler;
 import org.example.managers.CommandManager;
-import org.example.managers.ServerManager;
-import org.example.modules.FileManager;
 import org.example.modules.TCPserver;
-import org.example.utility.Configuration;
 import org.example.managers.DumpManager;
 import org.example.managers.TicketRepository;
 import org.example.utility.Commands;
-import org.example.utility.Console;
-import org.example.utility.StandardConsole;
-import org.example.utility.ValidateManager;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.Scanner;
 
 public class ServerApp {
     public static final int PORT = 9091;
@@ -42,6 +29,10 @@ public class ServerApp {
             register(Commands.ADD, new Add(repository));
             register(Commands.UPDATE, new Update(repository));
             register(Commands.REMOVE_BY_ID, new RemoveById(repository));
+            register(Commands.REMOVE_FIRST, new RemoveFirst(repository));
+            register(Commands.REMOVE_LOWER, new RemoveLower(repository));
+            register(Commands.COUNT_BY_DISCOUNT, new CountByDiscount(repository));
+            register(Commands.FILTER_GREATER_THAN_DISCOUNT, new FilterGreaterThanDiscount(repository));
             register(Commands.CLEAR, new Clear(repository));
             register(Commands.HEAD, new Head(repository));
         }};

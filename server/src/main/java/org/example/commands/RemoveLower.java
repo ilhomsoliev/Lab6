@@ -28,12 +28,11 @@ public class RemoveLower extends Command {
     @Override
     public Response apply(Request request) {
         var req = (RemoveLowerRequest) request;
-
         try {
             if (productRepository.size() == 0) {
                 return new RemoveLowerResponse("No ticket to delete!");
             }
-            productRepository.removeFirst();
+            productRepository.removeLowerPricedTickets(req.ticket);
             return new RemoveByIdResponse(null);
         } catch (Exception e) {
             return new RemoveByIdResponse(e.toString());

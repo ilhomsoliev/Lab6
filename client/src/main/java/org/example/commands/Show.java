@@ -16,12 +16,10 @@ import java.io.IOException;
  */
 public class Show extends Command {
     private final Console console;
-    private final TCPclient client;
 
-    public Show(Console console, TCPclient client) {
+    public Show(Console console) {
         super("show");
         this.console = console;
-        this.client = client;
     }
 
     /**
@@ -33,7 +31,7 @@ public class Show extends Command {
         try {
             if (!arguments[1].isEmpty()) throw new WrongAmountOfElementsException();
 
-            var response = (ShowResponse) client.sendCommandAndReceiveResponse(new ShowRequest());
+            var response = (ShowResponse) TCPclient.sendCommandAndReceiveResponse(new ShowRequest());
             if (response.getError() != null && !response.getError().isEmpty()) {
                 throw new APIException(response.getError());
             }
@@ -43,9 +41,8 @@ public class Show extends Command {
                 return true;
             }
 
-            for (var product : response.products) {
-                console.println(product + "\n");
-            }
+            console.println(response.products + "\n");
+
             return true;
         } catch (WrongAmountOfElementsException exception) {
             console.printError("Неправильное количество аргументов!");
