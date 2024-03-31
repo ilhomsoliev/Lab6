@@ -22,7 +22,6 @@ public class Runner {
     }
 
     private final Console console;
-    private final TCPclient client;
 
     private final Map<String, Command> commands;
 
@@ -30,7 +29,6 @@ public class Runner {
 
     public Runner(TCPclient client, Console console) {
         Interrogator.setUserScanner(new Scanner(System.in));
-        this.client = client;
         this.console = console;
 
         this.commands = new HashMap<>() {{

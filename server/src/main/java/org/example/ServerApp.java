@@ -10,6 +10,8 @@ import org.example.managers.DumpManager;
 import org.example.managers.TicketRepository;
 import org.example.utility.Commands;
 
+import java.util.Scanner;
+
 public class ServerApp {
     public static final int PORT = 9091;
     public static Logger logger = LogManager.getLogger("ServerLogger");
@@ -38,6 +40,32 @@ public class ServerApp {
             register(Commands.HEAD, new Head(repository));
         }};
         TCPserver server = new TCPserver("localhost", PORT, new CommandHandler(commandManager));
+        JTread t = new JTread(repository);
+        t.start();
         server.start();
+    }
+
+    static class JTread extends Thread {
+        private final TicketRepository productRepository;
+
+        public JTread(TicketRepository productRepository) {
+            super();
+            this.productRepository = productRepository;
+        }
+
+        public void run() {
+            Scanner scan = new Scanner(System.in);
+            while (true) {
+                String s = scan.nextLine();
+                if (s.equals("save")) {
+                    try {
+                        new Save(productRepository).apply(null);
+                    } catch (Exception ignored) {
+                    }
+                } else {
+                    System.err.println("Неизвестная команда");
+                }
+            }
+        }
     }
 }
