@@ -3,12 +3,14 @@ package org.example.commands;
 import org.example.command_line.console.Console;
 import org.example.exceptions.APIException;
 import org.example.exceptions.WrongAmountOfElementsException;
+import org.example.model.Ticket;
 import org.example.modules.TCPclient;
 import org.example.network.NetworkClient;
 import org.example.network_models.request.ShowRequest;
 import org.example.network_models.response.ShowResponse;
 
 import java.io.IOException;
+import java.util.stream.Collectors;
 
 /**
  * Команда 'show'. Выводит все элементы коллекции.
@@ -35,14 +37,11 @@ public class Show extends Command {
             if (response.getError() != null && !response.getError().isEmpty()) {
                 throw new APIException(response.getError());
             }
-
-            if (response.products.isEmpty()) {
+            if (response.productsList.isEmpty()) {
                 console.println("Коллекция пуста!");
                 return true;
             }
-
-            console.println(response.products + "\n");
-
+            console.println((response.productsList).stream().toList() + "\n");
             return true;
         } catch (WrongAmountOfElementsException exception) {
             console.printError("Неправильное количество аргументов!");

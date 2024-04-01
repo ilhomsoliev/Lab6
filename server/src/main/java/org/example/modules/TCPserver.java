@@ -1,7 +1,5 @@
 package org.example.modules;
 
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.SerializationUtils;
 import org.example.handlers.CommandHandler;
 import org.example.network_models.request.Request;
 
@@ -27,6 +25,8 @@ public class TCPserver {
     private SendingManager sendingManager = new SendingManager();
     private CommandHandler commandHandler;
     private Selector selector;
+
+    private Runnable saveCallback;
 
     public TCPserver(String host, int port, CommandHandler commandHandler) {
         this.port = port;
@@ -88,6 +88,7 @@ public class TCPserver {
                                 var response = commandHandler.handle(request);
                                 a.writeObject(response);
                                 sendingManager.send((SocketChannel) key.channel(), baos.toByteArray());
+                                if (saveCallback != null) saveCallback.run();
                             }
                         } catch (Exception e) {
                             sendingManager.send((SocketChannel) key.channel(), "503".getBytes());
@@ -113,6 +114,9 @@ public class TCPserver {
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
+    }
+    public void setSaveCallback(Runnable saveCallback) {
+        this.saveCallback = saveCallback;
     }
 }
 

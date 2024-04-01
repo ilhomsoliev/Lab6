@@ -50,7 +50,7 @@ public class TCPclient {
             sendingManager.send(baos.toByteArray());
             try (var command = new ObjectInputStream(new ByteArrayInputStream(receivingManager. receive()))) {
                 Response response = (Response) command.readObject();
-                System.out.println(response.getResult());
+//                System.out.println(response.getResult());
                 return response;
             }
         } catch (Exception e) {

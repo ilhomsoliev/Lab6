@@ -7,10 +7,10 @@ import org.example.utility.Commands;
 import java.util.List;
 
 public class ShowResponse extends Response {
-    public final String products;
+    public final List<Ticket> productsList;
 
-    public ShowResponse(String products, String error) {
-        super(Commands.SHOW, error, products);
-        this.products = products;
+    public ShowResponse(String error, List<Ticket> productsList) {
+        super(Commands.SHOW, error, "");
+        this.productsList = productsList;
     }
 }

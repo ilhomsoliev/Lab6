@@ -11,26 +11,31 @@ import java.io.IOException;
 
 public class Save extends Command {
     private final TicketRepository productRepository;
+    private String filePath;
+    private Boolean isAuto;
 
-    public Save(TicketRepository productRepository) {
+    public Save(TicketRepository productRepository, String filePath, Boolean isAuto) {
         super("save", "save data locally");
         this.productRepository = productRepository;
+        this.isAuto = isAuto;
+        this.filePath = filePath;
     }
 
     @Override
     public Response apply(Request request) {
-        StringBuilder str = new StringBuilder();
-        for(Ticket t : productRepository.getCollection()){
-            str.append(t.toString());
-        }
-        saveStringToFile(str.toString(), "/Users/ilhomsoliev/IdeaProjects/Lab6/server/data/out/out_server.txt");
         return null;
     }
 
-    public static void saveStringToFile(String text, String filePath) {
+    public void saveStringToFile() {
+        StringBuilder str = new StringBuilder();
+        for (Ticket t : productRepository.getCollection()) {
+            str.append(t.toString());
+        }
+        var text = str.toString();
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             writer.write(text);
-            System.out.println("[Server]: Изменения сохранены.");
+            if (!isAuto)
+                System.out.println("[Server]: Изменения сохранены.");
         } catch (IOException e) {
             e.printStackTrace();
         }
