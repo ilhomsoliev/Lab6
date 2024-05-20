@@ -36,9 +36,9 @@ public class RemoveById extends Command {
 
             if (response.getError() != null && !response.getError().isEmpty()) {
                 throw new APIException(response.getError());
-            }
+            } else
+                console.println("Ticket успешно удален.");
 
-            console.println("Ticket успешно удален.");
             return true;
         } catch (WrongAmountOfElementsException exception) {
             console.printError("Неправильное количество аргументов!");

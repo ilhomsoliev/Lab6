@@ -31,7 +31,7 @@ public class RemoveLower extends Command {
             if (productRepository.size() == 0) {
                 return new RemoveLowerResponse("No ticket to delete!");
             }
-            productRepository.removeLowerPricedTickets(req.ticket);
+            productRepository.removeLowerPricedTickets(req.ticket, request.login);
             return new RemoveByIdResponse(null);
         } catch (Exception e) {
             return new RemoveByIdResponse(e.toString());

@@ -1,13 +1,20 @@
 package org.commonapp.network_models.request;
 
+import org.commonapp.utility.AuthModule;
+
 import java.io.Serializable;
 import java.util.Objects;
 
 public abstract class Request implements Serializable {
     private final String name;
 
+    public String login;
+    public String password;
+
     public Request(String name) {
         this.name = name;
+        this.login = AuthModule.login;
+        this.password = AuthModule.password;
     }
 
     public String getName() {

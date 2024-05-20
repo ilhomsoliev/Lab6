@@ -7,7 +7,7 @@ import org.clientapp.modules.AppModule;
 import org.clientapp.modules.TCPclient;
 
 public class ClientApp {
-    public static final int PORT = 21276;
+    public static final int PORT = 21379;
 
     public static void main(String[] args) {
         var client = new TCPclient("localhost", PORT);
@@ -15,6 +15,7 @@ public class ClientApp {
         Console console = new StandardConsole();
         AppModule.setClient(client);
         var cli = new Runner(client, console);
+
         cli.interactiveMode();
 
     }

@@ -28,7 +28,7 @@ public class RemoveFirst extends Command {
             if (productRepository.size() == 0) {
                 return new RemoveFirstResponse("No ticket to delete!");
             }
-            productRepository.removeFirst();
+            productRepository.removeFirst(request.login);
             return new RemoveFirstResponse(null);
         } catch (Exception e) {
             return new RemoveFirstResponse(e.toString());

@@ -3,6 +3,8 @@ package org.serverapp;
 import org.serverapp.commands.*;
 import org.serverapp.handlers.CommandHandler;
 import org.serverapp.managers.CommandManager;
+import org.serverapp.managers.DatabaseManager;
+import org.serverapp.modules.AuthRepository;
 import org.serverapp.modules.TCPserver;
 import org.serverapp.managers.DumpManager;
 import org.serverapp.managers.TicketRepository;
@@ -13,7 +15,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Scanner;
 
 public class Main {
-    public static final int PORT = 21276;
+    public static final int PORT = 21379;
     public static Logger logger = LoggerFactory.getLogger(Main.class);
     public static String dirPath;
 
@@ -25,8 +27,13 @@ public class Main {
         dirPath = args[0];
         String filePath = args[0] + "/data1.txt";
         var dumpManager = new DumpManager(filePath);
-        var repository = new TicketRepository(dumpManager);
-
+        var dataBaseManager = new DatabaseManager("jdbc:postgresql://127.0.0.1:5432/studs", "s409606", "X4biAZZVlZ0sh5ev");
+        if (!dataBaseManager.initializeTables()) {
+            System.out.println("Что-то пошло не так!");
+            return;
+        }
+        var repository = new TicketRepository(dumpManager, dataBaseManager);
+        var authRepository = new AuthRepository(dataBaseManager);
         var commandManager = new CommandManager() {{
             register(Commands.HELP, new Help(this));
             register(Commands.INFO, new Info(repository));
@@ -41,6 +48,7 @@ public class Main {
             register(Commands.PRINT_ASCENDING, new PrintAscending(repository));
             register(Commands.CLEAR, new Clear(repository));
             register(Commands.HEAD, new Head(repository));
+            register(Commands.LOGIN, new Login(authRepository, dataBaseManager, repository));
         }};
         TCPserver server = new TCPserver("localhost", PORT, new CommandHandler(commandManager));
         server.setSaveCallback((new Save(repository, dirPath + "/out/out_server.txt", true)::saveStringToFile));

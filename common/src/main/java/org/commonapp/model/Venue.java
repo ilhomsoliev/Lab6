@@ -24,6 +24,15 @@ public class Venue implements Serializable {
         this.type = type;
         nextId++;
     }
+    public String getName(){
+        return name;
+    }
+    public long getCapacity(){
+        return capacity;
+    }
+    public VenueType getType(){
+        return type;
+    }
 
     public boolean validate() {
         return (id != null && name != null && !name.isEmpty() && capacity > 0 && type != null);

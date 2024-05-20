@@ -5,6 +5,7 @@ import org.commonapp.utility.Validatable;
 
 import java.io.Serializable;
 import java.util.Objects;
+
 /**
  * Class given in task
  * @author: ilhom_soliev
@@ -16,6 +17,14 @@ public class Coordinates implements Validatable, Serializable {
     public Coordinates(Long x, Double y) {
         this.x = x;
         this.y = y;
+    }
+
+    public Long getX() {
+        return x;
+    }
+
+    public Double getY() {
+        return y;
     }
 
     /**

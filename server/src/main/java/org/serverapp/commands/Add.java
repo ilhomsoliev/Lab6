@@ -19,10 +19,6 @@ public class Add extends Command {
         this.ticketRepository = ticketRepository;
     }
 
-    /**
-     * Выполняет команду
-     * @return Успешность выполнения команды.
-     */
     @Override
     public Response apply(Request request) {
         var req = (AddRequest) request;
@@ -30,7 +26,8 @@ public class Add extends Command {
             if (!req.ticket.validate()) {
                 return new AddResponse(-1, "Поля продукта не валидны! Продукт не добавлен!");
             }
-            var newId = ticketRepository.add(req.ticket);
+
+            var newId = ticketRepository.add(req.ticket, req.login);
             return new AddResponse(newId, null);
         } catch (Exception e) {
             return new AddResponse(-1, e.toString());

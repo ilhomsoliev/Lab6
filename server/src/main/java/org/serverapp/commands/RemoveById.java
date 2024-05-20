@@ -32,8 +32,9 @@ public class RemoveById extends Command {
                 return new RemoveByIdResponse("Продукта с таким ID в коллекции нет!");
             }
 
-            productRepository.remove(req.id);
-            return new RemoveByIdResponse(null);
+            var response = productRepository.remove(req.id, req.login);
+            if(response) return new RemoveByIdResponse(null);
+            else return new RemoveByIdResponse("OShibka");
         } catch (Exception e) {
             return new RemoveByIdResponse(e.toString());
         }

@@ -3,9 +3,9 @@ package org.clientapp.command_line;
 
 import org.clientapp.command_line.console.Console;
 import org.clientapp.commands.*;
+import org.commonapp.utility.AuthModule;
 import org.clientapp.modules.TCPclient;
 import org.clientapp.utility.Interrogator;
-import org.clientapp.commands.*;
 import org.commonapp.utility.Commands;
 
 import java.io.File;
@@ -47,6 +47,7 @@ public class Runner {
             put(Commands.COUNT_BY_DISCOUNT, new CountByDiscount(console));
             put(Commands.FILTER_GREATER_THAN_DISCOUNT, new FilterGreaterThanDiscount(console));
             put(Commands.PRINT_ASCENDING, new PrintAscending(console));
+            put(Commands.LOGIN, new Login(console));
         }};
     }
 
@@ -59,12 +60,16 @@ public class Runner {
             RunnerStatus commandStatus;
             String[] userCommand = {"", ""};
             do {
-                userCommand = (userScanner.nextLine().trim() + " ").split(" ", 2);
-                userCommand[1] = userCommand[1].trim();
-                System.out.println("Usercommand: " + userCommand[0]);
+                if (!AuthModule.isAuthenticated) {
+                    userCommand = new String[]{"login", ""};
+                } else {
+                    userCommand = (userScanner.nextLine().trim() + " ").split(" ", 2);
+                    userCommand[1] = userCommand[1].trim();
+                    System.out.println("Usercommand: " + userCommand[0]);
+
+                }
                 commandStatus = launchCommand(userCommand);
             } while (commandStatus != RunnerStatus.EXIT && userScanner.hasNext());
-
             Interrogator.setUserScanner(new Scanner(System.in));
         } catch (NoSuchElementException exception) {
             console.printError("Пользовательский ввод не обнаружен!");

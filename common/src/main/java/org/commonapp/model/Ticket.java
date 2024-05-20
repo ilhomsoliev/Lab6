@@ -11,9 +11,7 @@ import java.time.LocalDate;
  */
 public class Ticket extends Element {
 
-    private static long nextId = 1;
-
-    private long id; //Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
+    private Long id; //Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private String name; //Поле не может быть null, Строка не может быть пустой
     private Coordinates coordinates; //Поле не может быть null
     private LocalDate creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
@@ -33,7 +31,6 @@ public class Ticket extends Element {
             TicketType type,
             Venue venue
     ) {
-        this.id = nextId;
         this.name = name;
         this.coordinates = coordinates;
         this.creationDate = creationDate;
@@ -66,8 +63,14 @@ public class Ticket extends Element {
         this.venue = venue;
     }
 
-    public static void touchNextId() {
-        nextId++;
+    public String getName() {
+        return name;
+    }
+    public Coordinates getCoordinates() {
+        return coordinates;
+    }
+    public LocalDate getCreationDate() {
+        return creationDate;
     }
 
     public double getPrice() {
@@ -77,6 +80,13 @@ public class Ticket extends Element {
     public int getDiscount() {
         return discount;
     }
+    public boolean getRefundable() {
+        return refundable;
+    }
+
+    public TicketType getType() {
+        return type;
+    }
 
     /**
      * Валидирует правильность полей.
@@ -85,7 +95,7 @@ public class Ticket extends Element {
      */
     @Override
     public boolean validate() {
-        if (id <= 0) return false;
+//        if (id <= 0) return false;
         if (name == null || name.isEmpty()) return false;
         if (coordinates == null) return false;
         if (creationDate == null) return false;
@@ -107,7 +117,11 @@ public class Ticket extends Element {
 
     @Override
     public int getId() {
-        return (int) id;
+        return id.intValue();
+    }
+
+    public Long getIdLong(){
+        return id;
     }
 
     public Venue getVenue() {

@@ -16,5 +16,6 @@ public interface Commands {
     String COUNT_BY_DISCOUNT = "count_by_discount";
     String FILTER_GREATER_THAN_DISCOUNT = "filter_greater_than_discount";
     String PRINT_ASCENDING = "print_ascending";
+    String LOGIN = "login";
 
 }
